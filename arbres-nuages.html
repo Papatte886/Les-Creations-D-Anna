@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arbres à nuages — Anna Créations</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#faf7f2;--warm:#f0e8db;--blush:#e2bfac;
+  --rose:#b5705a;--gold:#c9963c;--teal:#4a8fa8;
+  --dark:#1e1510;--text:#4a3728;--muted:#8a7060;
+  --green:#7a9e6e;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:"DM Sans",sans-serif;font-weight:300;overflow-x:hidden;padding-top:64px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,247,242,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,150,60,.15);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;gap:1rem}
+.nav-brand{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-style:italic;color:var(--dark);text-decoration:none;white-space:nowrap}
+.nav-brand span{color:var(--rose)}
+.nav-links{display:flex;align-items:center;gap:.15rem;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.4rem .7rem;border-radius:2px;transition:color .2s,background .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--dark);background:rgba(201,150,60,.08)}
+.nav-links a.active{color:var(--rose);font-weight:500}
+.nav-links a.nav-admin{color:var(--gold);border:1px solid rgba(201,150,60,.3)}
+.nav-links a.nav-admin:hover{background:rgba(201,150,60,.1)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem}
+.burger span{display:block;width:22px;height:2px;background:var(--dark);transition:all .3s}
+@media(max-width:700px){
+  .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(250,247,242,.98);flex-direction:column;align-items:flex-start;padding:1rem 2rem;border-bottom:1px solid rgba(201,150,60,.15);gap:.5rem}
+  .nav-links.open{display:flex}
+  .burger{display:flex}
+  body{padding-top:64px}
+}
+
+/* ── HERO BAND ── */
+.page-hero{text-align:center;padding:3.5rem 2rem 2rem;position:relative;background:radial-gradient(ellipse at 30% 50%,rgba(201,150,60,.1) 0%,transparent 60%),var(--cream)}
+.page-hero .eyebrow{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.page-hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(2.2rem,6vw,4rem);color:var(--dark);line-height:1.05}
+.page-hero h1 em{color:var(--rose);font-style:italic}
+.page-hero p{margin-top:.8rem;font-size:.92rem;color:var(--muted);max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.ornament{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.2rem;margin-bottom:0}
+.ornament::before,.ornament::after{content:"";display:block;width:50px;height:1px;background:var(--gold);opacity:.4}
+.ornament span{color:var(--gold);font-size:.8rem}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.8rem;padding:2.5rem 2.5rem 4rem;max-width:1300px;margin:0 auto}
+@media(max-width:600px){.grid{padding:1.5rem;gap:1.2rem}}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:3px;overflow:hidden;cursor:pointer;position:relative;box-shadow:0 2px 15px rgba(30,21,16,.06);transition:transform .4s,box-shadow .4s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(30,21,16,.12)}
+.card-img-wrap{overflow:hidden;aspect-ratio:3/4;position:relative}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.card:hover .card-img{transform:scale(1.05)}
+.card-badge{position:absolute;top:.9rem;left:.9rem;background:rgba(250,247,242,.93);backdrop-filter:blur(4px);border:1px solid rgba(201,150,60,.3);color:var(--gold);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;padding:.28rem .6rem;border-radius:2px}
+.card-body{padding:1.2rem 1.4rem 1.6rem;border-top:1px solid rgba(201,150,60,.1)}
+.card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.card-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--dark);line-height:1.25}
+.card-desc{margin-top:.5rem;font-size:.8rem;color:var(--muted);line-height:1.6}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.price{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--rose)}
+.btn-primary{background:var(--dark);color:#fff;border:none;padding:.5rem 1.1rem;font-family:"DM Sans",sans-serif;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .25s,transform .2s;border-radius:2px}
+.btn-primary:hover{background:var(--rose);transform:scale(1.03)}
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;text-align:center;color:var(--muted);gap:1rem;padding:3rem}
+.coming-soon .icon{font-size:3rem;opacity:.3}
+.coming-soon p{font-size:.9rem;line-height:1.7;max-width:300px}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,21,16,.7);backdrop-filter:blur(8px);z-index:300;justify-content:center;align-items:center;padding:2rem}
+.modal-overlay.open{display:flex;animation:fadeIn .3s}
+.modal{background:var(--cream);max-width:520px;width:100%;border-radius:3px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:scaleIn .3s;max-height:90vh;overflow-y:auto}
+.modal img{width:100%;max-height:350px;object-fit:cover}
+.modal-body{padding:1.8rem}
+.modal-body .card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.modal-body h2{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--dark)}
+.modal-body p{margin-top:.8rem;font-size:.86rem;line-height:1.75;color:var(--muted)}
+.modal-actions{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;gap:.8rem}
+.btn-outline{background:none;border:1.5px solid rgba(30,21,16,.2);color:var(--text);padding:.5rem 1rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:"DM Sans",sans-serif;border-radius:2px;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── SUR MESURE (shared) ── */
+.custom-section{background:var(--warm);padding:4rem 2rem;margin-top:1rem}
+.custom-inner{max-width:860px;margin:0 auto}
+.custom-header{text-align:center;margin-bottom:2.5rem}
+.custom-header h2{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--dark)}
+.custom-header h2 em{color:var(--rose);font-style:italic}
+.custom-header p{margin-top:.7rem;color:var(--muted);font-size:.88rem;line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto}
+.configurator{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07)}
+.config-step{margin-bottom:1.6rem}
+.config-step label{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;font-weight:500}
+.config-options{display:flex;flex-wrap:wrap;gap:.45rem}
+.config-opt{padding:.4rem .9rem;border:1.5px solid rgba(201,150,60,.3);border-radius:3px;font-size:.78rem;color:var(--text);cursor:pointer;transition:all .2s;background:transparent;font-family:"DM Sans",sans-serif}
+.config-opt:hover{border-color:var(--gold);color:var(--gold)}
+.config-opt.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.stone-opts{display:flex;flex-wrap:wrap;gap:.45rem}
+.stone-opt{padding:.38rem .85rem;border-radius:20px;font-size:.73rem;cursor:pointer;border:2px solid transparent;transition:transform .2s,box-shadow .2s;font-family:"DM Sans",sans-serif;font-weight:500}
+.stone-opt:hover{transform:scale(1.07)}
+.stone-opt.sel{box-shadow:0 0 0 2.5px var(--dark)}
+.config-textarea{width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.85rem 1rem;font-family:"DM Sans",sans-serif;font-size:.83rem;color:var(--text);resize:vertical;min-height:85px;background:var(--cream);transition:border-color .2s;outline:none}
+.config-textarea:focus{border-color:var(--gold)}
+.config-summary{margin-top:1.8rem;padding:1.2rem 1.4rem;background:var(--cream);border-radius:4px;border:1px solid rgba(201,150,60,.2)}
+.config-summary h4{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--dark);margin-bottom:.7rem}
+.sum-line{font-size:.81rem;color:var(--muted);margin-bottom:.3rem;line-height:1.6}
+.sum-line strong{color:var(--text)}
+.btn-send{margin-top:1.3rem;width:100%;padding:.78rem;background:var(--rose);color:#fff;border:none;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+.btn-send:hover{background:var(--dark)}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:2.5rem 2rem;font-size:.76rem;color:var(--muted);border-top:1px solid rgba(201,150,60,.15);line-height:2}
+footer strong{color:var(--rose);font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:400;font-size:.95rem}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── ZOOM IN MODAL ── */
+.modal-zoom-wrap{position:relative;overflow:hidden;background:#111;cursor:zoom-in;max-height:420px}
+.modal-zoom-wrap.zoomed{cursor:zoom-out}
+.modal-zoom-wrap img{width:100%;display:block;transition:transform .15s ease;transform-origin:0 0;user-select:none;-webkit-user-select:none}
+</style>
+<style>
+/* ── COUSSIN CONFIGURATOR ── */
+.coussin-cfg{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07);max-width:860px;margin:0 auto 4rem}
+.coussin-cfg h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--dark);margin-bottom:.4rem}
+.coussin-cfg>p{font-size:.82rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.6}
+.cfg-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:560px){.cfg-row{grid-template-columns:1fr}}
+.cfg-label{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;font-weight:500}
+.cfg-input{width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s}
+.cfg-input:focus{border-color:var(--gold)}
+.motif-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.6rem;margin-bottom:1.5rem}
+.motif-btn{padding:.6rem .5rem;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;font-size:.72rem;color:var(--text);cursor:pointer;text-align:center;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s;line-height:1.4}
+.motif-btn:hover{border-color:var(--gold);color:var(--gold)}
+.motif-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.remplissage-opts{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.5rem}
+.fill-opt{padding:.4rem .9rem;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;font-size:.78rem;color:var(--text);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s}
+.fill-opt:hover{border-color:var(--gold)}
+.fill-opt.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+/* Preview canvas */
+.coussin-preview{border:1px solid rgba(201,150,60,.2);border-radius:4px;overflow:hidden;background:var(--warm);display:flex;align-items:center;justify-content:center;min-height:200px;margin-bottom:1.5rem;position:relative}
+.coussin-preview canvas{max-width:100%;border-radius:3px}
+.preview-label{position:absolute;bottom:.6rem;right:.8rem;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);opacity:.7}
+/* Arbre config */
+.arbre-cfg{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07);max-width:860px;margin:0 auto 4rem}
+.range-wrap{display:flex;align-items:center;gap:1rem}
+.range-wrap input[type=range]{flex:1;accent-color:var(--rose)}
+.range-val{min-width:40px;text-align:right;font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--rose)}
+/* Edit overlay on cards */
+.card-edit-btn{display:none;position:absolute;bottom:.7rem;right:.7rem;background:rgba(201,150,60,.9);color:#fff;border:none;padding:.3rem .7rem;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;z-index:10}
+body.admin-mode .card-edit-btn{display:block}
+/* Edit modal */
+.edit-overlay{display:none;position:fixed;inset:0;background:rgba(30,21,16,.8);z-index:400;justify-content:center;align-items:center;padding:1rem}
+.edit-overlay.open{display:flex}
+.edit-box{background:var(--cream);max-width:480px;width:100%;border-radius:4px;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
+.edit-box h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--dark);margin-bottom:1.2rem}
+.edit-field{margin-bottom:1rem}
+.edit-field label{display:block;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.edit-field input,.edit-field textarea{width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.83rem;color:var(--text);background:#fff;outline:none;transition:border-color .2s}
+.edit-field input:focus,.edit-field textarea:focus{border-color:var(--gold)}
+.edit-field textarea{min-height:80px;resize:vertical}
+.edit-actions{display:flex;gap:.8rem;margin-top:1.2rem}
+.btn-save{flex:1;padding:.65rem;background:var(--rose);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.btn-save:hover{background:var(--dark)}
+.btn-cancel{padding:.65rem 1.2rem;background:none;border:1.5px solid rgba(30,21,16,.2);color:var(--text);border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:border-color .2s}
+.btn-cancel:hover{border-color:var(--rose);color:var(--rose)}
+.admin-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--dark);color:#fff;padding:.7rem 1.5rem;z-index:500;align-items:center;justify-content:space-between;font-size:.75rem}
+body.admin-mode .admin-bar{display:flex}
+body.admin-mode{padding-bottom:50px}
+.admin-bar button{background:var(--gold);color:#fff;border:none;padding:.4rem 1rem;border-radius:2px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html"><span>Anna</span> Créations</a>
+  <div class="burger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" data-page="index">Accueil</a>
+    <a href="boucles.html" data-page="boucles">Boucles</a>
+    <a href="bracelets.html" data-page="bracelets">Bracelets</a>
+    <a href="colliers.html" data-page="colliers">Colliers</a>
+    <a href="coussins.html" data-page="coussins">Coussins</a>
+    <a href="arbres-nuages.html" data-page="arbres-nuages">Arbres à nuages</a>
+    <a href="arbres-perles.html" data-page="arbres-perles">Arbres à perles</a>
+    <a href="sur-mesure.html" data-page="sur-mesure">Sur mesure</a>
+    <a href="admin.html" class="nav-admin" data-page="admin">✦ Admin</a>
+  </div>
+</nav>
+<script>
+(function(){var p=location.pathname.split('/').pop().replace('.html','');if(!p||p==='index')p='index';var a=document.querySelector('[data-page="'+p+'"]');if(a)a.classList.add('active');})();
+</script>
+<div class="page-hero">
+  <p class="eyebrow">Décoration naturelle</p>
+  <h1>Arbres <em>à nuages</em></h1>
+  <p>Branches naturelles glanées en forêt, mousse stabilisée sans entretien. Chaque pièce est rigoureusement unique — impossible à reproduire.</p>
+  <div class="ornament"><span>✦</span></div>
+</div>
+<div style="max-width:700px;margin:1.5rem auto 0;padding:0 2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center">
+  <div style="padding:1.2rem .8rem;background:#fff;border-radius:3px;border-top:3px solid var(--green)">
+    <div style="font-size:1.5rem;margin-bottom:.4rem">🌿</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--dark)">Sans entretien</div>
+    <div style="font-size:.73rem;color:var(--muted);margin-top:.2rem">Mousse stabilisée à vie</div>
+  </div>
+  <div style="padding:1.2rem .8rem;background:#fff;border-radius:3px;border-top:3px solid var(--rose)">
+    <div style="font-size:1.5rem;margin-bottom:.4rem">🌳</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--dark)">Bois naturel</div>
+    <div style="font-size:.73rem;color:var(--muted);margin-top:.2rem">Glanné en forêt par Anna</div>
+  </div>
+  <div style="padding:1.2rem .8rem;background:#fff;border-radius:3px;border-top:3px solid var(--gold)">
+    <div style="font-size:1.5rem;margin-bottom:.4rem">✦</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--dark)">Pièce unique</div>
+    <div style="font-size:.73rem;color:var(--muted);margin-top:.2rem">Jamais deux pareils</div>
+  </div>
+</div>
+<section class="grid" id="collection" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+<article class="card" data-item="{}" style="grid-column:1/-1;max-width:500px;margin:0 auto">
+  <div class="card-img-wrap" style="aspect-ratio:4/5;background:linear-gradient(135deg,#c8e0c0,#a0c898);display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center;color:#2a5a20;padding:2rem">
+      <div style="font-size:4rem;margin-bottom:1rem">☁️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem">Photos bientôt disponibles</div>
+      <div style="font-size:.8rem;margin-top:.5rem;opacity:.7">Chaque arbre est unique — contactez Anna</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="card-type">Arbre à nuages</p>
+    <h3 class="card-name">Bonsaï naturel & mousse</h3>
+    <p class="card-desc">Branche naturelle glanée en forêt, mousse stabilisée verte. Chaque arbre est une pièce absolument unique. Sans entretien.</p>
+    <div class="card-footer"><span class="price">dès 150 €</span><button class="btn-primary" onclick="event.stopPropagation();document.getElementById('arbre-cfg-section').scrollIntoView({behavior:'smooth'})">Configurer</button></div>
+  </div>
+</article>
+<!-- FIN CATALOGUE NUAGES -->
+</section>
+
+<section id="arbre-cfg-section" style="max-width:760px;margin:2rem auto 4rem;padding:0 2rem">
+  <div style="text-align:center;margin-bottom:2rem">
+    <p style="font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem">Commande sur mesure</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--dark)">Composez <em style="color:var(--rose);font-style:italic">votre arbre</em></h2>
+    <p style="font-size:.85rem;color:var(--muted);margin-top:.6rem;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto">
+      Anna part en forêt chercher la branche qui donnera vie à votre arbre. Chaque pièce est donc véritablement unique, impossible à reproduire à l'identique.
+    </p>
+  </div>
+  <div class="arbre-cfg">
+    <div style="background:rgba(201,150,60,.07);border-left:3px solid var(--gold);padding:1rem 1.2rem;border-radius:0 3px 3px 0;font-size:.83rem;color:var(--text);line-height:1.7;margin-bottom:1.8rem">
+      ✦ &nbsp;La taille finale dépend de la branche trouvée. Anna vous contactera avant de commencer pour valider ensemble.
+    </div>
+
+    <div style="margin-bottom:1.6rem">
+      <label class="cfg-label">Taille souhaitée</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem" id="nuage-taille">
+        <button class="config-opt active" onclick="selNuageTaille(this)">S — ~30 cm</button>
+        <button class="config-opt" onclick="selNuageTaille(this)">M — ~50 cm</button>
+        <button class="config-opt" onclick="selNuageTaille(this)">L — ~70 cm</button>
+        <button class="config-opt" onclick="selNuageTaille(this)">XL — ~95 cm</button>
+        <button class="config-opt" onclick="selNuageTaille(this)">Sur devis</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:1.6rem">
+      <label class="cfg-label">Nombre de nuages — <span id="nuage-count-val">5</span></label>
+      <div class="range-wrap">
+        <input type="range" min="1" max="12" value="5" id="nuage-count" oninput="updateNuageCount(this.value)">
+        <span class="range-val" id="nuage-count-disp">5</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:1.6rem">
+      <label class="cfg-label">Couleur de la mousse</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem" id="nuage-couleur">
+        <button class="config-opt active" onclick="selOpt('nuage-couleur',this)" style="background:#7a9e6e;color:#fff;border-color:#7a9e6e">🟢 Vert vif</button>
+        <button class="config-opt" onclick="selOpt('nuage-couleur',this)">🌿 Vert forêt</button>
+        <button class="config-opt" onclick="selOpt('nuage-couleur',this)">🔵 Bleu nuit</button>
+        <button class="config-opt" onclick="selOpt('nuage-couleur',this)">⚪ Blanc / givré</button>
+        <button class="config-opt" onclick="selOpt('nuage-couleur',this)">🟤 Naturel / brun</button>
+        <button class="config-opt" onclick="selOpt('nuage-couleur',this)">🎨 Mixte</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:1.6rem">
+      <label class="cfg-label">Pot / socle</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem" id="nuage-pot">
+        <button class="config-opt active" onclick="selOpt('nuage-pot',this)">Blanc (inclus)</button>
+        <button class="config-opt" onclick="selOpt('nuage-pot',this)">Noir</button>
+        <button class="config-opt" onclick="selOpt('nuage-pot',this)">Terre cuite</button>
+        <button class="config-opt" onclick="selOpt('nuage-pot',this)">Sans pot</button>
+        <button class="config-opt" onclick="selOpt('nuage-pot',this)">J'ai le mien</button>
+      </div>
+    </div>
+
+    <div style="background:var(--cream);border-radius:4px;padding:1.2rem 1.4rem;border:1px solid rgba(201,150,60,.2);margin-bottom:1.2rem;font-size:.83rem;color:var(--muted);line-height:1.9">
+      <div style="font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem">Récapitulatif & tarif estimé</div>
+      🌳 <strong style="color:var(--text)">Taille :</strong> <span id="sum-nuage-taille">S — ~30 cm</span><br>
+      ☁️ <strong style="color:var(--text)">Nuages :</strong> <span id="sum-nuage-count">5</span><br>
+      🎨 <strong style="color:var(--text)">Mousse :</strong> <span id="sum-nuage-couleur">Vert vif</span><br>
+      🪴 <strong style="color:var(--text)">Pot :</strong> <span id="sum-nuage-pot">Blanc</span><br>
+      💶 <strong style="color:var(--text)">Tarif estimé :</strong> <span id="sum-nuage-prix" style="color:var(--rose);font-family:'Cormorant Garamond',serif;font-size:1.1rem">150 €</span>
+    </div>
+
+    <div style="margin-bottom:1.2rem">
+      <label class="cfg-label">Message / précisions</label>
+      <textarea class="cfg-input" id="nuage-msg" style="min-height:75px;resize:vertical" placeholder="Usage (intérieur/extérieur), couleurs de votre déco, occasion…"></textarea>
+    </div>
+
+    <button onclick="sendNuage()" style="width:100%;padding:.8rem;background:var(--rose);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s" onmouseover="this.style.background='var(--dark)'" onmouseout="this.style.background='var(--rose)'">
+      Demander un devis à Anna →
+    </button>
+  </div>
+</section>
+
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-zoom-wrap"><img id="m-img" src="" alt=""></div>
+    <div class="modal-body">
+      <p class="card-type" id="m-type"></p>
+      <h2 id="m-title"></h2>
+      <p id="m-desc"></p>
+      <div class="modal-actions">
+        <span class="price" id="m-price"></span>
+        <button class="btn-outline" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-bar">
+  <span>✦ Mode admin actif — clique sur ✏️ pour modifier un article</span>
+  <button onclick="sessionStorage.removeItem('anna_admin_ok');location.reload()">Quitter</button>
+</div>
+
+<div class="edit-overlay" id="edit-overlay">
+  <div class="edit-box">
+    <h3>Modifier l'article</h3>
+    <div class="edit-field"><label>Nom</label><input id="edit-name" type="text"></div>
+    <div class="edit-field"><label>Prix</label><input id="edit-price" type="text"></div>
+    <div class="edit-field"><label>Description</label><textarea id="edit-desc"></textarea></div>
+    <div class="edit-actions">
+      <button class="btn-cancel" onclick="closeEdit()">Annuler</button>
+      <button class="btn-save" onclick="saveEdit()">Sauvegarder & Copier</button>
+    </div>
+    <div id="edit-result-zone" style="display:none;margin-top:1rem">
+      <p style="font-size:.75rem;color:var(--muted);margin-bottom:.4rem">Code mis à jour (déjà copié) :</p>
+      <pre id="edit-result" style="background:#1e1510;color:#f0e8db;padding:1rem;border-radius:3px;font-size:.68rem;overflow-x:auto;white-space:pre-wrap;max-height:150px;overflow-y:auto"></pre>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--rose);margin-bottom:.5rem">"Rien de série. Tout d'Anna."</div>
+  Chaque création est façonnée à la main par <strong>Anna</strong>. ✦
+</footer>
+<script>
+
+function openModal(data){
+  document.getElementById('m-img').src=data.img;
+  document.getElementById('m-type').textContent=data.type;
+  document.getElementById('m-title').textContent=data.name;
+  document.getElementById('m-desc').textContent=data.desc;
+  document.getElementById('m-price').textContent=data.price;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
+
+function initZoom(){
+  var wrap=document.querySelector('.modal-zoom-wrap');
+  if(!wrap)return;
+  var img=wrap.querySelector('img'),zoomed=false;
+  wrap.onclick=function(e){
+    if(!zoomed){var rect=wrap.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*100,y=(e.clientY-rect.top)/rect.height*100;img.style.transformOrigin=x+'% '+y+'%';img.style.transform='scale(2.8)';wrap.classList.add('zoomed');zoomed=true;}
+    else{img.style.transform='scale(1)';wrap.classList.remove('zoomed');zoomed=false;}
+  };
+  wrap.onmousemove=function(e){if(!zoomed)return;var rect=wrap.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*100,y=(e.clientY-rect.top)/rect.height*100;img.style.transformOrigin=x+'% '+y+'%';};
+}
+var _origOpenModal=window.openModal;
+window.openModal=function(data){_origOpenModal(data);setTimeout(initZoom,50);};
+
+
+// ── INLINE EDIT SYSTEM ──────────────────────────────────────
+var _editTarget = null;
+
+function checkAdminMode(){
+  if(sessionStorage.getItem('anna_admin_ok')==='1'){
+    document.body.classList.add('admin-mode');
+    document.querySelector('.admin-bar').style.display='flex';
+  }
+}
+
+function openEdit(card){
+  _editTarget = card;
+  var data = JSON.parse(card.dataset.item);
+  document.getElementById('edit-name').value = data.name || '';
+  document.getElementById('edit-price').value = data.price || '';
+  document.getElementById('edit-desc').value = data.desc || '';
+  document.getElementById('edit-overlay').classList.add('open');
+}
+
+function saveEdit(){
+  if(!_editTarget) return;
+  var data = JSON.parse(_editTarget.dataset.item);
+  data.name = document.getElementById('edit-name').value.trim();
+  data.price = document.getElementById('edit-price').value.trim();
+  data.desc = document.getElementById('edit-desc').value.trim();
+  
+  // Update card display
+  _editTarget.querySelector('.card-name').textContent = data.name;
+  _editTarget.querySelector('.price').textContent = data.price;
+  _editTarget.querySelector('.card-desc').textContent = data.desc;
+  _editTarget.dataset.item = JSON.stringify(data);
+  
+  // Generate updated HTML snippet
+  var updated = _editTarget.outerHTML;
+  document.getElementById('edit-result').textContent = updated;
+  document.getElementById('edit-result-zone').style.display='block';
+  document.getElementById('edit-overlay').classList.remove('open');
+  
+  // Copy to clipboard
+  navigator.clipboard.writeText(updated).then(function(){
+    showToast('Code copié ! Colle-le dans GitHub pour sauvegarder.');
+  });
+}
+
+function closeEdit(){
+  document.getElementById('edit-overlay').classList.remove('open');
+  _editTarget = null;
+}
+
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:.7rem 1.4rem;border-radius:3px;font-size:.8rem;z-index:600;animation:fadeIn .3s';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove();},3500);
+}
+
+document.addEventListener('DOMContentLoaded', checkAdminMode);
+
+
+var _nuageTaille='S — ~30 cm', _nuageCouleur='Vert vif', _nuagePot='Blanc';
+var _PRIX={S:150,M:195,L:245,XL:310};
+
+function selNuageTaille(btn){
+  document.querySelectorAll('#nuage-taille .config-opt').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  _nuageTaille=btn.textContent.trim();
+  document.getElementById('sum-nuage-taille').textContent=_nuageTaille;
+  updateNuagePrix();
+}
+function selOpt(groupId,btn){
+  document.querySelectorAll('#'+groupId+' .config-opt').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  if(groupId==='nuage-couleur'){_nuageCouleur=btn.textContent.replace(/[^a-zA-ZÀ-ÿ\/ ]/g,'').trim();document.getElementById('sum-nuage-couleur').textContent=_nuageCouleur;}
+  if(groupId==='nuage-pot'){_nuagePot=btn.textContent.trim();document.getElementById('sum-nuage-pot').textContent=_nuagePot;}
+}
+function updateNuageCount(v){
+  document.getElementById('nuage-count-val').textContent=v;
+  document.getElementById('nuage-count-disp').textContent=v;
+  document.getElementById('sum-nuage-count').textContent=v;
+  updateNuagePrix();
+}
+function updateNuagePrix(){
+  var taille=_nuageTaille.split(' ')[0];
+  var base=_PRIX[taille]||150;
+  var nuages=parseInt(document.getElementById('nuage-count').value)||5;
+  var prix=base+Math.max(0,nuages-5)*12;
+  document.getElementById('sum-nuage-prix').textContent=prix+' €';
+}
+function sendNuage(){
+  var nuages=document.getElementById('nuage-count').value;
+  var msg=document.getElementById('nuage-msg').value.trim();
+  var prix=document.getElementById('sum-nuage-prix').textContent;
+  var t='Bonjour Anna,\n\nDemande de devis pour un arbre à nuages :\n\n• Taille : '+_nuageTaille+'\n• Nuages : '+nuages+'\n• Mousse : '+_nuageCouleur+'\n• Pot : '+_nuagePot+'\n• Tarif estimé : '+prix+'\n• Message : '+(msg||'Aucun');
+  window.location.href='mailto:mergal@free.fr?subject=Devis arbre à nuages&body='+encodeURIComponent(t);
+}
+
+</script>
+</body>
+</html>

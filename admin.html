@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>Admin — Anna Créations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#faf7f2;--warm:#f0e8db;--blush:#e2bfac;
+  --rose:#b5705a;--gold:#c9963c;--teal:#4a8fa8;
+  --dark:#1e1510;--text:#4a3728;--muted:#8a7060;
+  --green:#7a9e6e;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:"DM Sans",sans-serif;font-weight:300;overflow-x:hidden;padding-top:64px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,247,242,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,150,60,.15);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;gap:1rem}
+.nav-brand{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-style:italic;color:var(--dark);text-decoration:none;white-space:nowrap}
+.nav-brand span{color:var(--rose)}
+.nav-links{display:flex;align-items:center;gap:.15rem;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.4rem .7rem;border-radius:2px;transition:color .2s,background .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--dark);background:rgba(201,150,60,.08)}
+.nav-links a.active{color:var(--rose);font-weight:500}
+.nav-links a.nav-admin{color:var(--gold);border:1px solid rgba(201,150,60,.3)}
+.nav-links a.nav-admin:hover{background:rgba(201,150,60,.1)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem}
+.burger span{display:block;width:22px;height:2px;background:var(--dark);transition:all .3s}
+@media(max-width:700px){
+  .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(250,247,242,.98);flex-direction:column;align-items:flex-start;padding:1rem 2rem;border-bottom:1px solid rgba(201,150,60,.15);gap:.5rem}
+  .nav-links.open{display:flex}
+  .burger{display:flex}
+  body{padding-top:64px}
+}
+
+/* ── HERO BAND ── */
+.page-hero{text-align:center;padding:3.5rem 2rem 2rem;position:relative;background:radial-gradient(ellipse at 30% 50%,rgba(201,150,60,.1) 0%,transparent 60%),var(--cream)}
+.page-hero .eyebrow{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.page-hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(2.2rem,6vw,4rem);color:var(--dark);line-height:1.05}
+.page-hero h1 em{color:var(--rose);font-style:italic}
+.page-hero p{margin-top:.8rem;font-size:.92rem;color:var(--muted);max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.ornament{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.2rem;margin-bottom:0}
+.ornament::before,.ornament::after{content:"";display:block;width:50px;height:1px;background:var(--gold);opacity:.4}
+.ornament span{color:var(--gold);font-size:.8rem}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.8rem;padding:2.5rem 2.5rem 4rem;max-width:1300px;margin:0 auto}
+@media(max-width:600px){.grid{padding:1.5rem;gap:1.2rem}}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:3px;overflow:hidden;cursor:pointer;position:relative;box-shadow:0 2px 15px rgba(30,21,16,.06);transition:transform .4s,box-shadow .4s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(30,21,16,.12)}
+.card-img-wrap{overflow:hidden;aspect-ratio:3/4;position:relative}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.card:hover .card-img{transform:scale(1.05)}
+.card-badge{position:absolute;top:.9rem;left:.9rem;background:rgba(250,247,242,.93);backdrop-filter:blur(4px);border:1px solid rgba(201,150,60,.3);color:var(--gold);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;padding:.28rem .6rem;border-radius:2px}
+.card-body{padding:1.2rem 1.4rem 1.6rem;border-top:1px solid rgba(201,150,60,.1)}
+.card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.card-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--dark);line-height:1.25}
+.card-desc{margin-top:.5rem;font-size:.8rem;color:var(--muted);line-height:1.6}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.price{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--rose)}
+.btn-primary{background:var(--dark);color:#fff;border:none;padding:.5rem 1.1rem;font-family:"DM Sans",sans-serif;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .25s,transform .2s;border-radius:2px}
+.btn-primary:hover{background:var(--rose);transform:scale(1.03)}
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;text-align:center;color:var(--muted);gap:1rem;padding:3rem}
+.coming-soon .icon{font-size:3rem;opacity:.3}
+.coming-soon p{font-size:.9rem;line-height:1.7;max-width:300px}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,21,16,.7);backdrop-filter:blur(8px);z-index:300;justify-content:center;align-items:center;padding:2rem}
+.modal-overlay.open{display:flex;animation:fadeIn .3s}
+.modal{background:var(--cream);max-width:520px;width:100%;border-radius:3px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:scaleIn .3s;max-height:90vh;overflow-y:auto}
+.modal img{width:100%;max-height:350px;object-fit:cover}
+.modal-body{padding:1.8rem}
+.modal-body .card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.modal-body h2{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--dark)}
+.modal-body p{margin-top:.8rem;font-size:.86rem;line-height:1.75;color:var(--muted)}
+.modal-actions{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;gap:.8rem}
+.btn-outline{background:none;border:1.5px solid rgba(30,21,16,.2);color:var(--text);padding:.5rem 1rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:"DM Sans",sans-serif;border-radius:2px;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── SUR MESURE (shared) ── */
+.custom-section{background:var(--warm);padding:4rem 2rem;margin-top:1rem}
+.custom-inner{max-width:860px;margin:0 auto}
+.custom-header{text-align:center;margin-bottom:2.5rem}
+.custom-header h2{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--dark)}
+.custom-header h2 em{color:var(--rose);font-style:italic}
+.custom-header p{margin-top:.7rem;color:var(--muted);font-size:.88rem;line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto}
+.configurator{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07)}
+.config-step{margin-bottom:1.6rem}
+.config-step label{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;font-weight:500}
+.config-options{display:flex;flex-wrap:wrap;gap:.45rem}
+.config-opt{padding:.4rem .9rem;border:1.5px solid rgba(201,150,60,.3);border-radius:3px;font-size:.78rem;color:var(--text);cursor:pointer;transition:all .2s;background:transparent;font-family:"DM Sans",sans-serif}
+.config-opt:hover{border-color:var(--gold);color:var(--gold)}
+.config-opt.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.stone-opts{display:flex;flex-wrap:wrap;gap:.45rem}
+.stone-opt{padding:.38rem .85rem;border-radius:20px;font-size:.73rem;cursor:pointer;border:2px solid transparent;transition:transform .2s,box-shadow .2s;font-family:"DM Sans",sans-serif;font-weight:500}
+.stone-opt:hover{transform:scale(1.07)}
+.stone-opt.sel{box-shadow:0 0 0 2.5px var(--dark)}
+.config-textarea{width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.85rem 1rem;font-family:"DM Sans",sans-serif;font-size:.83rem;color:var(--text);resize:vertical;min-height:85px;background:var(--cream);transition:border-color .2s;outline:none}
+.config-textarea:focus{border-color:var(--gold)}
+.config-summary{margin-top:1.8rem;padding:1.2rem 1.4rem;background:var(--cream);border-radius:4px;border:1px solid rgba(201,150,60,.2)}
+.config-summary h4{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--dark);margin-bottom:.7rem}
+.sum-line{font-size:.81rem;color:var(--muted);margin-bottom:.3rem;line-height:1.6}
+.sum-line strong{color:var(--text)}
+.btn-send{margin-top:1.3rem;width:100%;padding:.78rem;background:var(--rose);color:#fff;border:none;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+.btn-send:hover{background:var(--dark)}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:2.5rem 2rem;font-size:.76rem;color:var(--muted);border-top:1px solid rgba(201,150,60,.15);line-height:2}
+footer strong{color:var(--rose);font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:400;font-size:.95rem}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<script>
+(function(){
+  var stored = sessionStorage.getItem('anna_admin_ok');
+  if(stored === '1') return;
+  var attempts = 0;
+  function ask(){
+    var pwd = prompt('🔒 Page réservée à Anna\n\nMot de passe :');
+    if(pwd === null){ window.location.href='index.html'; return; }
+    if(pwd === 'AnnaCreations2024'){
+      sessionStorage.setItem('anna_admin_ok','1');
+    } else {
+      attempts++;
+      if(attempts >= 3){ alert('Accès refusé.'); window.location.href='index.html'; return; }
+      alert('Mot de passe incorrect. Essai '+attempts+'/3');
+      ask();
+    }
+  }
+  ask();
+})();
+</script>
+<nav>
+  <a class="nav-brand" href="index.html"><span>Anna</span> Créations</a>
+  <div class="burger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" data-page="index">Accueil</a>
+    <a href="boucles.html" data-page="boucles">Boucles</a>
+    <a href="bracelets.html" data-page="bracelets">Bracelets</a>
+    <a href="colliers.html" data-page="colliers">Colliers</a>
+    <a href="coussins.html" data-page="coussins">Coussins</a>
+    <a href="arbres-nuages.html" data-page="arbres-nuages">Arbres à nuages</a>
+    <a href="arbres-perles.html" data-page="arbres-perles">Arbres à perles</a>
+    <a href="sur-mesure.html" data-page="sur-mesure">Sur mesure</a>
+    <a href="admin.html" class="nav-admin" data-page="admin">✦ Admin</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var p=location.pathname.split('/').pop().replace('.html','');
+  if(!p||p==='index')p='index';
+  var a=document.querySelector('[data-page="'+p+'"]');
+  if(a)a.classList.add('active');
+})();
+</script>
+<div class="page-hero" style="background:radial-gradient(ellipse at 50% 50%,rgba(201,150,60,.12) 0%,transparent 60%),var(--cream)">
+  <p class="eyebrow">Espace privé</p>
+  <h1>Admin <em>Anna</em></h1>
+  <p>Ajoute une nouvelle création sans toucher au code. Remplis le formulaire → copie le bloc généré → colle-le dans le bon fichier HTML sur GitHub.</p>
+  <div class="ornament"><span>✦</span></div>
+</div>
+
+<div style="max-width:780px;margin:0 auto;padding:2rem 2rem 5rem">
+
+  <!-- GUIDE RAPIDE -->
+  <details style="background:#fff;border:1px solid rgba(201,150,60,.2);border-radius:4px;padding:1.4rem;margin-bottom:2rem;cursor:pointer">
+    <summary style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--dark);list-style:none">📖 Guide — Comment mettre en ligne une nouvelle création ?</summary>
+    <ol style="margin-top:1.2rem;padding-left:1.4rem;font-size:.85rem;line-height:2;color:var(--muted)">
+      <li>Remplis le formulaire ci-dessous (photo, nom, description, prix, page)</li>
+      <li>Clique <strong style="color:var(--dark)">Générer le bloc</strong></li>
+      <li>Clique <strong style="color:var(--dark)">Copier</strong> pour copier le code HTML</li>
+      <li>Va sur <a href="https://github.com" target="_blank" style="color:var(--rose)">github.com</a> → ton dépôt <code>anna-creations</code></li>
+      <li>Ouvre le fichier de la bonne page (ex : <code>boucles.html</code>)</li>
+      <li>Clique l'icône ✏️ (Edit), trouve la ligne <code>&lt;!-- FIN CATALOGUE --&gt;</code></li>
+      <li>Colle ton bloc juste <strong>avant</strong> cette ligne</li>
+      <li>Clique <strong>Commit changes</strong> → c'est en ligne !</li>
+    </ol>
+  </details>
+
+  <!-- FORMULAIRE -->
+  <div style="background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07)">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--dark);margin-bottom:.4rem">Nouvelle création</h3>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.8rem">Remplis tous les champs puis génère le bloc à copier.</p>
+
+    <div style="margin-bottom:1.4rem">
+      <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Page de destination</label>
+      <select id="adm-page" style="width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);outline:none">
+        <option value="boucles.html">Boucles d'oreilles</option>
+        <option value="bracelets.html">Bracelets</option>
+        <option value="colliers.html">Colliers</option>
+        <option value="arbres-nuages.html">Arbres à nuages</option>
+        <option value="arbres-perles.html">Arbres à perles</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Photo du bijou</label>
+      <div id="drop-zone" style="border:2px dashed rgba(201,150,60,.4);border-radius:4px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--cream)" onclick="document.getElementById('adm-photo').click()" ondragover="event.preventDefault();this.style.borderColor='var(--rose)'" ondragleave="this.style.borderColor='rgba(201,150,60,.4)'" ondrop="handleDrop(event)">
+        <div id="drop-preview" style="display:none;margin-bottom:1rem"><img id="preview-img" style="max-height:200px;max-width:100%;border-radius:3px;object-fit:cover" src="" alt=""></div>
+        <div id="drop-text">
+          <div style="font-size:2rem;margin-bottom:.5rem;opacity:.4">📷</div>
+          <div style="font-size:.82rem;color:var(--muted)">Clique ou glisse ta photo ici<br><span style="font-size:.72rem;opacity:.7">JPG, PNG — max 2 Mo recommandé</span></div>
+        </div>
+      </div>
+      <input type="file" id="adm-photo" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.4rem">
+      <div>
+        <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Nom de la création</label>
+        <input id="adm-name" type="text" placeholder="Ex : Cascade Préhnite" style="width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(201,150,60,.25)'">
+      </div>
+      <div>
+        <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Prix</label>
+        <input id="adm-price" type="text" placeholder="Ex : 10 €" style="width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(201,150,60,.25)'">
+      </div>
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Type (affiché en petit au-dessus du nom)</label>
+      <input id="adm-type" type="text" placeholder="Ex : Boucles d'oreilles" style="width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(201,150,60,.25)'">
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Description</label>
+      <textarea id="adm-desc" placeholder="Décris les pierres, le métal, le style, ce qui rend ce bijou unique…" style="width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);resize:vertical;min-height:100px;background:var(--cream);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(201,150,60,.25)'"></textarea>
+    </div>
+
+    <div style="margin-bottom:1.4rem">
+      <label style="display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Badge (optionnel)</label>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap" id="badge-opts">
+        <button class="config-opt active" onclick="selBadge(this)">Fait main</button>
+        <button class="config-opt" onclick="selBadge(this)">Pièce unique</button>
+        <button class="config-opt" onclick="selBadge(this)">Nouveau</button>
+        <button class="config-opt" onclick="selBadge(this)">Dernière pièce</button>
+      </div>
+    </div>
+
+    <button onclick="generate()" style="width:100%;padding:.8rem;background:var(--dark);color:#fff;border:none;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s;margin-bottom:1rem" onmouseover="this.style.background='var(--rose)'" onmouseout="this.style.background='var(--dark)'">
+      ✦ Générer le bloc HTML
+    </button>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div id="result-zone" style="display:none;margin-top:2rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem">
+      <h4 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--dark)">Bloc généré — à coller dans GitHub</h4>
+      <button onclick="copyCode()" id="copy-btn" style="background:var(--gold);color:#fff;border:none;padding:.45rem 1rem;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-family:'DM Sans',sans-serif;transition:background .2s">Copier</button>
+    </div>
+    <pre id="result-code" style="background:#1e1510;color:#f0e8db;padding:1.4rem;border-radius:4px;font-size:.75rem;line-height:1.7;overflow-x:auto;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow-y:auto"></pre>
+    <div style="margin-top:1rem;padding:1rem 1.2rem;background:rgba(201,150,60,.08);border-left:3px solid var(--gold);border-radius:0 3px 3px 0;font-size:.82rem;color:var(--text);line-height:1.7">
+      📋 <strong>Rappel :</strong> dans GitHub, ouvre <strong id="target-file">boucles.html</strong>, clique ✏️ Edit, trouve <code>&lt;!-- FIN CATALOGUE --&gt;</code> et colle ce bloc juste avant.
+    </div>
+  </div>
+</div>
+<footer>
+  Chaque bijou est imaginé et façonné à la main par <strong>Anna</strong>.<br>
+  Chaque pierre choisie une à une. ✦
+</footer>
+<script>
+var _b64='';
+var _badge='Fait main';
+
+function handleFile(file){
+  if(!file)return;
+  var r=new FileReader();
+  r.onload=function(e){
+    _b64=e.target.result;
+    document.getElementById('preview-img').src=_b64;
+    document.getElementById('drop-preview').style.display='block';
+    document.getElementById('drop-text').style.display='none';
+  };
+  r.readAsDataURL(file);
+}
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('drop-zone').style.borderColor='rgba(201,150,60,.4)';
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image/'))handleFile(f);
+}
+function selBadge(btn){
+  document.getElementById('badge-opts').querySelectorAll('.config-opt').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  _badge=btn.textContent.trim();
+}
+function generate(){
+  var name=document.getElementById('adm-name').value.trim();
+  var price=document.getElementById('adm-price').value.trim();
+  var type=document.getElementById('adm-type').value.trim();
+  var desc=document.getElementById('adm-desc').value.trim();
+  var page=document.getElementById('adm-page').value;
+  if(!name||!price||!type||!desc){alert('Remplis tous les champs !');return;}
+  if(!_b64){alert('Ajoute une photo !');return;}
+  var escaped_desc=desc.replace(/'/g,"\'").replace(/"/g,'&quot;');
+  var escaped_name=name.replace(/'/g,"\'");
+  var escaped_type=type.replace(/'/g,"\'");
+  var bloc=`<article class="card" onclick="openModal({img:'${_b64}',type:'${escaped_type}',name:'${escaped_name}',desc:'${escaped_desc}',price:'${price}'})">
+  <span class="card-badge">${_badge}</span>
+  <div class="card-img-wrap"><img class="card-img" src="${_b64}" alt="${name}" loading="lazy"></div>
+  <div class="card-body">
+    <p class="card-type">${type}</p>
+    <h3 class="card-name">${name}</h3>
+    <p class="card-desc">${desc}</p>
+    <div class="card-footer"><span class="price">${price}</span><button class="btn-primary">Voir</button></div>
+  </div>
+</article>`;
+  document.getElementById('result-code').textContent=bloc;
+  document.getElementById('result-zone').style.display='block';
+  document.getElementById('target-file').textContent=page;
+  document.getElementById('result-zone').scrollIntoView({behavior:'smooth'});
+}
+function copyCode(){
+  var text=document.getElementById('result-code').textContent;
+  navigator.clipboard.writeText(text).then(function(){
+    var btn=document.getElementById('copy-btn');
+    btn.textContent='✓ Copié !';
+    btn.style.background='var(--green)';
+    setTimeout(function(){btn.textContent='Copier';btn.style.background='var(--gold)';},2000);
+  });
+}
+</script>
+</body>
+</html>

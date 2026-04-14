@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>Sur mesure — Anna Créations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#faf7f2;--warm:#f0e8db;--blush:#e2bfac;
+  --rose:#b5705a;--gold:#c9963c;--teal:#4a8fa8;
+  --dark:#1e1510;--text:#4a3728;--muted:#8a7060;
+  --green:#7a9e6e;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:"DM Sans",sans-serif;font-weight:300;overflow-x:hidden;padding-top:64px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,247,242,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,150,60,.15);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;gap:1rem}
+.nav-brand{font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-style:italic;color:var(--dark);text-decoration:none;white-space:nowrap}
+.nav-brand span{color:var(--rose)}
+.nav-links{display:flex;align-items:center;gap:.15rem;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.4rem .7rem;border-radius:2px;transition:color .2s,background .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--dark);background:rgba(201,150,60,.08)}
+.nav-links a.active{color:var(--rose);font-weight:500}
+.nav-links a.nav-admin{color:var(--gold);border:1px solid rgba(201,150,60,.3)}
+.nav-links a.nav-admin:hover{background:rgba(201,150,60,.1)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.5rem}
+.burger span{display:block;width:22px;height:2px;background:var(--dark);transition:all .3s}
+@media(max-width:700px){
+  .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(250,247,242,.98);flex-direction:column;align-items:flex-start;padding:1rem 2rem;border-bottom:1px solid rgba(201,150,60,.15);gap:.5rem}
+  .nav-links.open{display:flex}
+  .burger{display:flex}
+  body{padding-top:64px}
+}
+
+/* ── HERO BAND ── */
+.page-hero{text-align:center;padding:3.5rem 2rem 2rem;position:relative;background:radial-gradient(ellipse at 30% 50%,rgba(201,150,60,.1) 0%,transparent 60%),var(--cream)}
+.page-hero .eyebrow{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.page-hero h1{font-family:"Cormorant Garamond",serif;font-size:clamp(2.2rem,6vw,4rem);color:var(--dark);line-height:1.05}
+.page-hero h1 em{color:var(--rose);font-style:italic}
+.page-hero p{margin-top:.8rem;font-size:.92rem;color:var(--muted);max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.ornament{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.2rem;margin-bottom:0}
+.ornament::before,.ornament::after{content:"";display:block;width:50px;height:1px;background:var(--gold);opacity:.4}
+.ornament span{color:var(--gold);font-size:.8rem}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.8rem;padding:2.5rem 2.5rem 4rem;max-width:1300px;margin:0 auto}
+@media(max-width:600px){.grid{padding:1.5rem;gap:1.2rem}}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:3px;overflow:hidden;cursor:pointer;position:relative;box-shadow:0 2px 15px rgba(30,21,16,.06);transition:transform .4s,box-shadow .4s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 45px rgba(30,21,16,.12)}
+.card-img-wrap{overflow:hidden;aspect-ratio:3/4;position:relative}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.card:hover .card-img{transform:scale(1.05)}
+.card-badge{position:absolute;top:.9rem;left:.9rem;background:rgba(250,247,242,.93);backdrop-filter:blur(4px);border:1px solid rgba(201,150,60,.3);color:var(--gold);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;padding:.28rem .6rem;border-radius:2px}
+.card-body{padding:1.2rem 1.4rem 1.6rem;border-top:1px solid rgba(201,150,60,.1)}
+.card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.card-name{font-family:"Cormorant Garamond",serif;font-size:1.2rem;color:var(--dark);line-height:1.25}
+.card-desc{margin-top:.5rem;font-size:.8rem;color:var(--muted);line-height:1.6}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
+.price{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--rose)}
+.btn-primary{background:var(--dark);color:#fff;border:none;padding:.5rem 1.1rem;font-family:"DM Sans",sans-serif;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .25s,transform .2s;border-radius:2px}
+.btn-primary:hover{background:var(--rose);transform:scale(1.03)}
+.coming-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;text-align:center;color:var(--muted);gap:1rem;padding:3rem}
+.coming-soon .icon{font-size:3rem;opacity:.3}
+.coming-soon p{font-size:.9rem;line-height:1.7;max-width:300px}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,21,16,.7);backdrop-filter:blur(8px);z-index:300;justify-content:center;align-items:center;padding:2rem}
+.modal-overlay.open{display:flex;animation:fadeIn .3s}
+.modal{background:var(--cream);max-width:520px;width:100%;border-radius:3px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:scaleIn .3s;max-height:90vh;overflow-y:auto}
+.modal img{width:100%;max-height:350px;object-fit:cover}
+.modal-body{padding:1.8rem}
+.modal-body .card-type{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.modal-body h2{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--dark)}
+.modal-body p{margin-top:.8rem;font-size:.86rem;line-height:1.75;color:var(--muted)}
+.modal-actions{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;gap:.8rem}
+.btn-outline{background:none;border:1.5px solid rgba(30,21,16,.2);color:var(--text);padding:.5rem 1rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:"DM Sans",sans-serif;border-radius:2px;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── SUR MESURE (shared) ── */
+.custom-section{background:var(--warm);padding:4rem 2rem;margin-top:1rem}
+.custom-inner{max-width:860px;margin:0 auto}
+.custom-header{text-align:center;margin-bottom:2.5rem}
+.custom-header h2{font-family:"Cormorant Garamond",serif;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--dark)}
+.custom-header h2 em{color:var(--rose);font-style:italic}
+.custom-header p{margin-top:.7rem;color:var(--muted);font-size:.88rem;line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto}
+.configurator{background:#fff;border-radius:6px;padding:2rem;box-shadow:0 4px 30px rgba(30,21,16,.07)}
+.config-step{margin-bottom:1.6rem}
+.config-step label{display:block;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;font-weight:500}
+.config-options{display:flex;flex-wrap:wrap;gap:.45rem}
+.config-opt{padding:.4rem .9rem;border:1.5px solid rgba(201,150,60,.3);border-radius:3px;font-size:.78rem;color:var(--text);cursor:pointer;transition:all .2s;background:transparent;font-family:"DM Sans",sans-serif}
+.config-opt:hover{border-color:var(--gold);color:var(--gold)}
+.config-opt.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.stone-opts{display:flex;flex-wrap:wrap;gap:.45rem}
+.stone-opt{padding:.38rem .85rem;border-radius:20px;font-size:.73rem;cursor:pointer;border:2px solid transparent;transition:transform .2s,box-shadow .2s;font-family:"DM Sans",sans-serif;font-weight:500}
+.stone-opt:hover{transform:scale(1.07)}
+.stone-opt.sel{box-shadow:0 0 0 2.5px var(--dark)}
+.config-textarea{width:100%;border:1.5px solid rgba(201,150,60,.25);border-radius:3px;padding:.85rem 1rem;font-family:"DM Sans",sans-serif;font-size:.83rem;color:var(--text);resize:vertical;min-height:85px;background:var(--cream);transition:border-color .2s;outline:none}
+.config-textarea:focus{border-color:var(--gold)}
+.config-summary{margin-top:1.8rem;padding:1.2rem 1.4rem;background:var(--cream);border-radius:4px;border:1px solid rgba(201,150,60,.2)}
+.config-summary h4{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--dark);margin-bottom:.7rem}
+.sum-line{font-size:.81rem;color:var(--muted);margin-bottom:.3rem;line-height:1.6}
+.sum-line strong{color:var(--text)}
+.btn-send{margin-top:1.3rem;width:100%;padding:.78rem;background:var(--rose);color:#fff;border:none;border-radius:3px;font-family:"DM Sans",sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+.btn-send:hover{background:var(--dark)}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:2.5rem 2rem;font-size:.76rem;color:var(--muted);border-top:1px solid rgba(201,150,60,.15);line-height:2}
+footer strong{color:var(--rose);font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:400;font-size:.95rem}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+</style>
+
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html"><span>Anna</span> Créations</a>
+  <div class="burger" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="nav-links">
+    <a href="index.html" data-page="index">Accueil</a>
+    <a href="boucles.html" data-page="boucles">Boucles</a>
+    <a href="bracelets.html" data-page="bracelets">Bracelets</a>
+    <a href="colliers.html" data-page="colliers">Colliers</a>
+    <a href="coussins.html" data-page="coussins">Coussins</a>
+    <a href="arbres-nuages.html" data-page="arbres-nuages">Arbres à nuages</a>
+    <a href="arbres-perles.html" data-page="arbres-perles">Arbres à perles</a>
+    <a href="sur-mesure.html" data-page="sur-mesure">Sur mesure</a>
+    <a href="admin.html" class="nav-admin" data-page="admin">✦ Admin</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var p=location.pathname.split('/').pop().replace('.html','');
+  if(!p||p==='index')p='index';
+  var a=document.querySelector('[data-page="'+p+'"]');
+  if(a)a.classList.add('active');
+})();
+</script>
+<div class="page-hero">
+  <p class="eyebrow">Création personnalisée</p>
+  <h1>Sur <em>mesure</em></h1>
+  <p>Vous choisissez tout — Anna crée. Pierres, métal, longueur, occasion. Chaque pièce est unique.</p>
+  <div class="ornament"><span>✦</span></div>
+</div>
+<div style="max-width:700px;margin:2rem auto;padding:0 2rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+  <div style="padding:1.4rem;background:#fff;border-radius:3px;border-left:3px solid var(--gold)">
+    <div style="font-size:1.3rem;margin-bottom:.5rem">✦</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--dark)">Pierre à la main</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.6">Chaque pierre est choisie une à une pour votre commande.</div>
+  </div>
+  <div style="padding:1.4rem;background:#fff;border-radius:3px;border-left:3px solid var(--rose)">
+    <div style="font-size:1.3rem;margin-bottom:.5rem">💌</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--dark)">Livrée avec un mot</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.6">Parfait pour offrir — Anna glisse toujours un petit mot personnel.</div>
+  </div>
+  <div style="padding:1.4rem;background:#fff;border-radius:3px;border-left:3px solid var(--teal)">
+    <div style="font-size:1.3rem;margin-bottom:.5rem">🕐</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--dark)">Délai 5–10 jours</div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.6">Selon la complexité et les pierres disponibles.</div>
+  </div>
+</div>
+<section class="custom-section">
+<div class="custom-inner">
+  <div class="custom-header">
+    <p class="eyebrow" style="font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem">Création personnalisée</p>
+    <h2>Votre bijou, <em>vos règles</em></h2>
+    <p>Anna crée selon vos envies. Choisissez les pierres, le métal, le type — elle s'occupe du reste.</p>
+  </div>
+  <div class="configurator">
+    <div class="config-step">
+      <label>1 · Type de bijou</label>
+      <div class="config-options" id="cfg-type">
+        <button class="config-opt" onclick="cfgSelect('type',this)">Boucles d'oreilles</button>
+        <button class="config-opt" onclick="cfgSelect('type',this)">Bracelet</button>
+        <button class="config-opt" onclick="cfgSelect('type',this)">Collier</button>
+        <button class="config-opt" onclick="cfgSelect('type',this)">Bague</button>
+        <button class="config-opt" onclick="cfgSelect('type',this)">Autre / Surprise</button>
+      </div>
+    </div>
+    <div class="config-step">
+      <label>2 · Métal</label>
+      <div class="config-options" id="cfg-metal">
+        <button class="config-opt" onclick="cfgSelect('metal',this)">Argenté (inox)</button>
+        <button class="config-opt" onclick="cfgSelect('metal',this)">Doré (plaqué or)</button>
+        <button class="config-opt" onclick="cfgSelect('metal',this)">Cuivré / rosé</button>
+        <button class="config-opt" onclick="cfgSelect('metal',this)">Peu importe</button>
+      </div>
+    </div>
+    <div class="config-step">
+      <label>3 · Pierres (plusieurs possibles)</label>
+      <div class="stone-opts" id="cfg-stones">
+        <button class="stone-opt sel" onclick="cfgStone(this)" style="background:#f7d0c8;color:#8a3a2a;border-color:#e8b0a0">Quartz rose</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#c8d8f0;color:#2a4a7a;border-color:#a8c0e0">Agate bleue</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#e8c8a0;color:#7a4a1a;border-color:#d0a870">Pierre de soleil</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#d8c0e8;color:#5a3a7a;border-color:#c0a0d8">Améthyste</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#f0c8a0;color:#8a4a1a;border-color:#e0a870">Cornaline</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#b8e0d8;color:#1a5a50;border-color:#90c8c0">Amazonite</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#a8d0e8;color:#1a4a6a;border-color:#80b8d8">Apatite</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#d0d0e8;color:#3a3a6a;border-color:#b0b0d0">Calcédoine</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#c8e0c0;color:#2a5a20;border-color:#a0c898">Préhnite</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#222;color:#ccc;border-color:#444">Hématite</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:#1a3a5a;color:#90c0e8;border-color:#2a5a8a">Pierre de soleil bleu</button>
+        <button class="stone-opt" onclick="cfgStone(this)" style="background:linear-gradient(135deg,#f7d0c8,#d8c0e8,#c8d8f0);color:#4a3728;border-color:#ccc">Laissez Anna choisir ✨</button>
+      </div>
+    </div>
+    <div class="config-step">
+      <label>4 · Message / occasion</label>
+      <textarea class="config-textarea" id="cfg-msg" placeholder="Cadeau d'anniversaire, couleurs préférées, longueur souhaitée…"></textarea>
+    </div>
+    <div class="config-summary">
+      <h4>Récapitulatif</h4>
+      <div class="sum-line">🎁 <strong>Type :</strong> <span id="sum-type">—</span></div>
+      <div class="sum-line">✨ <strong>Métal :</strong> <span id="sum-metal">—</span></div>
+      <div class="sum-line">💎 <strong>Pierres :</strong> <span id="sum-stones">Quartz rose</span></div>
+      <div class="sum-line">💌 <strong>Message :</strong> <span id="sum-msg">—</span></div>
+    </div>
+    <button class="btn-send" onclick="cfgSend()">Envoyer ma demande à Anna →</button>
+  </div>
+</div>
+</section>
+<script>
+var _cfg={type:'',metal:'',stones:['Quartz rose'],msg:''};
+function cfgSelect(k,btn){btn.parentElement.querySelectorAll('.config-opt').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');_cfg[k]=btn.textContent.trim();cfgUpdate()}
+function cfgStone(btn){var n=btn.textContent.trim();if(btn.classList.contains('sel')){if(_cfg.stones.length===1)return;btn.classList.remove('sel');_cfg.stones=_cfg.stones.filter(function(s){return s!==n})}else{btn.classList.add('sel');_cfg.stones.push(n)}cfgUpdate()}
+document.getElementById('cfg-msg').addEventListener('input',function(){_cfg.msg=this.value.trim();cfgUpdate()});
+function cfgUpdate(){document.getElementById('sum-type').textContent=_cfg.type||'—';document.getElementById('sum-metal').textContent=_cfg.metal||'—';document.getElementById('sum-stones').textContent=_cfg.stones.join(', ')||'—';document.getElementById('sum-msg').textContent=_cfg.msg||'—'}
+function cfgSend(){if(!_cfg.type||!_cfg.metal){alert('Merci de choisir un type et un métal !');return}var t='Bonjour Anna,
+
+Commande sur mesure :
+
+• Type : '+_cfg.type+'
+• Métal : '+_cfg.metal+'
+• Pierres : '+_cfg.stones.join(', ')+'
+• Message : '+(_cfg.msg||'Aucun');window.location.href='mailto:mergal@free.fr?subject=Commande sur mesure — Anna Créations&body='+encodeURIComponent(t)}
+</script><footer>
+  Chaque bijou est imaginé et façonné à la main par <strong>Anna</strong>.<br>
+  Chaque pierre choisie une à une. ✦
+</footer>
+<footer>
+  Chaque bijou est imaginé et façonné à la main par <strong>Anna</strong>.<br>
+  Chaque pierre choisie une à une. ✦
+</footer>
+</body>
+</html>
